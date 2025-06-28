@@ -835,20 +835,29 @@
                 <div class="detail-section">
                     <h2>📄 Documents</h2>
                     ${data.documents && data.documents.length > 0 ? data.documents.map(doc => `
-                    <div class="document-item" style="background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px;">
+                    <div class="document-item" style="background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong>${doc.type || 'Document'}</strong><br>
                             <small style="color: #7f8c8d;">Uploaded: ${formatDate(doc.uploaded_at)}</small><br>
                             <small>${doc.file_name || 'Unnamed file'}</small>
                         </div>
+                        ${doc.url ? `
+                        <button class="nav-btn" style="padding: 8px 16px; font-size: 13px;" onclick="window.open('${doc.url}', '_blank')">
+                            📄 View Document
+                        </button>` : ''}
                     </div>`).join('') : '<p>No documents uploaded</p>'}
                     
                     ${data.document_urls ? `
                     <h3>Document URLs</h3>
                     ${Object.entries(data.document_urls).map(([key, url]) => `
-                    <div class="info-row">
-                        <div class="info-label">${key}:</div>
-                        <div class="info-value" style="word-break: break-all;">${url}</div>
+                    <div class="info-row" style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="flex: 1;">
+                            <div class="info-label">${key}:</div>
+                            <div class="info-value" style="word-break: break-all;">${url}</div>
+                        </div>
+                        <button class="nav-btn" style="padding: 8px 16px; font-size: 13px; margin-left: 10px; flex-shrink: 0;" onclick="window.open('${url}', '_blank')">
+                            📄 View
+                        </button>
                     </div>`).join('')}` : ''}
                 </div>
             `;
