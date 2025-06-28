@@ -244,6 +244,71 @@
             line-height: 1.6;
         }
         
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .tab-btn {
+            background: #ecf0f1;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            color: #2c3e50;
+        }
+        
+        .tab-btn:hover {
+            background: #bdc3c7;
+        }
+        
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .detail-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .detail-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            font-size: 20px;
+        }
+        
+        .detail-section h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
         .raw-data {
             background: white;
             padding: 25px;
@@ -465,7 +530,7 @@
             
             // Generate HTML
             const html = `
-                <div class="shipment-content active">
+                <div id="shipment-0" class="shipment-content active">
                     <!-- Quick Stats -->
                     <div class="stats-grid">
                         <div class="stat-box">
@@ -486,15 +551,81 @@
                         </div>
                     </div>
                     
-                    <!-- Overview Cards -->
-                    <div class="overview-grid">
-                        ${generateOverviewCards(data, shipmentId)}
-                    </div>
-                    
-                    <!-- Timeline -->
-                    <div class="timeline">
-                        <h3>📅 Shipment Timeline</h3>
-                        ${generateTimeline(milestones)}
+                    <!-- Tab Navigation -->
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" onclick="showTab(0, 'overview')">Overview</button>
+                            <button class="tab-btn" onclick="showTab(0, 'milestones')">Milestones</button>
+                            <button class="tab-btn" onclick="showTab(0, 'pricing')">Pricing</button>
+                            <button class="tab-btn" onclick="showTab(0, 'providers')">Providers</button>
+                            <button class="tab-btn" onclick="showTab(0, 'geographic')">Geographic</button>
+                            <button class="tab-btn" onclick="showTab(0, 'documents')">Documents</button>
+                            <button class="tab-btn" onclick="showTab(0, 'financial')">Financial</button>
+                            <button class="tab-btn" onclick="showTab(0, 'system')">System</button>
+                            <button class="tab-btn" onclick="showTab(0, 'rates')">Rates</button>
+                            <button class="tab-btn" onclick="showTab(0, 'timestamps')">Timestamps</button>
+                            <button class="tab-btn" onclick="showTab(0, 'entities')">Entities</button>
+                        </div>
+                        
+                        <!-- Overview Tab (default active) -->
+                        <div id="tab-0-overview" class="tab-content active">
+                            <div class="overview-grid">
+                                ${generateOverviewCards(data, shipmentId)}
+                            </div>
+                        </div>
+                        
+                        <!-- Milestones Tab -->
+                        <div id="tab-0-milestones" class="tab-content">
+                            <div class="timeline">
+                                <h3>📅 Shipment Timeline</h3>
+                                ${generateTimeline(milestones)}
+                            </div>
+                        </div>
+                        
+                        <!-- Pricing Tab -->
+                        <div id="tab-0-pricing" class="tab-content">
+                            ${generatePricingTab(data)}
+                        </div>
+                        
+                        <!-- Providers Tab -->
+                        <div id="tab-0-providers" class="tab-content">
+                            ${generateProvidersTab(data)}
+                        </div>
+                        
+                        <!-- Geographic Tab -->
+                        <div id="tab-0-geographic" class="tab-content">
+                            ${generateGeographicTab(data)}
+                        </div>
+                        
+                        <!-- Documents Tab -->
+                        <div id="tab-0-documents" class="tab-content">
+                            ${generateDocumentsTab(data)}
+                        </div>
+                        
+                        <!-- Financial Tab -->
+                        <div id="tab-0-financial" class="tab-content">
+                            ${generateFinancialTab(data)}
+                        </div>
+                        
+                        <!-- System Tab -->
+                        <div id="tab-0-system" class="tab-content">
+                            ${generateSystemTab(data)}
+                        </div>
+                        
+                        <!-- Rates Tab -->
+                        <div id="tab-0-rates" class="tab-content">
+                            ${generateRatesTab(data)}
+                        </div>
+                        
+                        <!-- Timestamps Tab -->
+                        <div id="tab-0-timestamps" class="tab-content">
+                            ${generateTimestampsTab(data)}
+                        </div>
+                        
+                        <!-- Entities Tab -->
+                        <div id="tab-0-entities" class="tab-content">
+                            ${generateEntitiesTab(data)}
+                        </div>
                     </div>
                     
                     <!-- Raw Data -->
@@ -592,6 +723,331 @@
                 minute: '2-digit'
             });
         }
+        
+        // Tab content generators
+        function generatePricingTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>💰 Pricing Information</h2>
+                    <div class="info-row">
+                        <div class="info-label">Base Quote:</div>
+                        <div class="info-value">${data.base_quote || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Tax Rate:</div>
+                        <div class="info-value">${data.tax_rate || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Total with Tax:</div>
+                        <div class="info-value">${data.total_with_tax || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Total Price INR:</div>
+                        <div class="info-value">${data.total_price_inr || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Discounted Price:</div>
+                        <div class="info-value">${data.discounted_price || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Tax on Discounted Price:</div>
+                        <div class="info-value">${data.tax_on_discounted_price || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Advance Amount:</div>
+                        <div class="info-value">${data.advance_amount || 'N/A'}</div>
+                    </div>
+                    ${data.alternative_prices ? `
+                    <h3>Alternative Prices</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.alternative_prices.map(price => `<span class="tag">${price}</span>`).join('')}
+                    </div>` : ''}
+                </div>
+            `;
+        }
+        
+        function generateProvidersTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>🏢 Service Providers</h2>
+                    ${data.service_provider_ids ? `
+                    <h3>Service Provider IDs (${data.service_provider_ids.length})</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.service_provider_ids.map(id => `<span class="tag">${id}</span>`).join('')}
+                    </div>` : '<p>No service providers listed</p>'}
+                    
+                    ${data.shipping_line_ids ? `
+                    <h3>Shipping Line IDs (${data.shipping_line_ids.length})</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.shipping_line_ids.map(id => `<span class="tag">${id}</span>`).join('')}
+                    </div>` : ''}
+                    
+                    <div class="info-row">
+                        <div class="info-label">Importer/Exporter ID:</div>
+                        <div class="info-value">${data.importer_exporter_id || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Consistent Service ID:</div>
+                        <div class="info-value">${data.consistent_service_id || 'N/A'}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateGeographicTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>🌍 Geographic Information</h2>
+                    <div class="info-row">
+                        <div class="info-label">Origin Port ID:</div>
+                        <div class="info-value">${data.origin_port_id || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Destination Port ID:</div>
+                        <div class="info-value">${data.destination_port_id || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Origin Country ID:</div>
+                        <div class="info-value">${data.origin_country_id || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Destination Country ID:</div>
+                        <div class="info-value">${data.destination_country_id || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Cargo Stuffing Location:</div>
+                        <div class="info-value">${data.cargo_stuffing_location || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Origin Trade ID:</div>
+                        <div class="info-value">${data.origin_trade_id || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Destination Trade ID:</div>
+                        <div class="info-value">${data.destination_trade_id || 'N/A'}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateDocumentsTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>📄 Documents</h2>
+                    ${data.documents && data.documents.length > 0 ? data.documents.map(doc => `
+                    <div class="document-item" style="background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px;">
+                        <div>
+                            <strong>${doc.type || 'Document'}</strong><br>
+                            <small style="color: #7f8c8d;">Uploaded: ${formatDate(doc.uploaded_at)}</small><br>
+                            <small>${doc.file_name || 'Unnamed file'}</small>
+                        </div>
+                    </div>`).join('') : '<p>No documents uploaded</p>'}
+                    
+                    ${data.document_urls ? `
+                    <h3>Document URLs</h3>
+                    ${Object.entries(data.document_urls).map(([key, url]) => `
+                    <div class="info-row">
+                        <div class="info-label">${key}:</div>
+                        <div class="info-value" style="word-break: break-all;">${url}</div>
+                    </div>`).join('')}` : ''}
+                </div>
+            `;
+        }
+        
+        function generateFinancialTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>💵 Financial Details</h2>
+                    <div class="info-row">
+                        <div class="info-label">Payment Terms:</div>
+                        <div class="info-value">${data.payment_terms || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Product Code:</div>
+                        <div class="info-value">${data.product_code || 'N/A'}</div>
+                    </div>
+                    ${data.exchange_rates ? `
+                    <h3>Exchange Rates</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.exchange_rates.map(rate => `<span class="tag">${rate}</span>`).join('')}
+                    </div>` : ''}
+                    ${data.margin_structure ? `
+                    <h3>Margin Structure</h3>
+                    <div class="info-row">
+                        <div class="info-label">Cogoport Margin:</div>
+                        <div class="info-value">${data.margin_structure.cogoport_margin || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Demand Adjustment:</div>
+                        <div class="info-value">${data.margin_structure.demand_adjustment || 'N/A'}</div>
+                    </div>` : ''}
+                </div>
+            `;
+        }
+        
+        function generateSystemTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>🔧 System Information</h2>
+                    <div class="info-row">
+                        <div class="info-label">Shipment Serial ID:</div>
+                        <div class="info-value">${data.shipment_serial_id || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Activity Period Start:</div>
+                        <div class="info-value">${formatDate(data.activity_period_start)}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Activity Period End:</div>
+                        <div class="info-value">${formatDate(data.activity_period_end)}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Data Source:</div>
+                        <div class="info-value">${data.data_source?.join(', ') || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Change Actors:</div>
+                        <div class="info-value">${data.change_actors?.join(', ') || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Platform:</div>
+                        <div class="info-value">${data.platform || 'N/A'}</div>
+                    </div>
+                    ${data.platforms_used ? `
+                    <h3>Platforms Used</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.platforms_used.map(platform => `<span class="tag">${platform}</span>`).join('')}
+                    </div>` : ''}
+                </div>
+            `;
+        }
+        
+        function generateRatesTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>📊 Rate History</h2>
+                    ${data.rate_history && data.rate_history.length > 0 ? `
+                    <table class="rate-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Timestamp</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Price</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Currency</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Tax %</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Total</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.rate_history.map(rate => `
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${formatDate(rate.timestamp)}</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${rate.price}</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${rate.currency}</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${rate.tax_percent}%</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${rate.tax_total_price}</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">
+                                    ${rate.is_reverted ? 
+                                    `<span style="color: #e74c3c;">Reverted</span>` : 
+                                    `<span style="color: #27ae60;">Active</span>`}
+                                </td>
+                            </tr>`).join('')}
+                        </tbody>
+                    </table>` : '<p>No rate history available</p>'}
+                </div>
+            `;
+        }
+        
+        function generateTimestampsTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>⏰ All Timestamps</h2>
+                    <div class="info-row">
+                        <div class="info-label">Cargo Readiness Date:</div>
+                        <div class="info-value">${formatDate(data.cargo_readiness_date)}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Scheduled Departure:</div>
+                        <div class="info-value">${formatDate(data.scheduled_departure)}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">SI Filed:</div>
+                        <div class="info-value">${formatDate(data.si_filed)}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Origin Customs Cleared:</div>
+                        <div class="info-value">${formatDate(data.origin_customs_cleared)}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Container Picked from Yard:</div>
+                        <div class="info-value">${formatDate(data.container_picked_from_yard)}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Container Gated In:</div>
+                        <div class="info-value">${formatDate(data.container_gated_in)}</div>
+                    </div>
+                    ${data.rate_expiration_times ? `
+                    <h3>Rate Expiration Times</h3>
+                    <div style="margin: 15px 0; word-break: break-all;">
+                        ${data.rate_expiration_times.join(', ')}
+                    </div>` : ''}
+                    ${data.rate_validity_periods ? `
+                    <h3>Rate Validity Periods</h3>
+                    <div style="margin: 15px 0; word-break: break-all;">
+                        ${data.rate_validity_periods.join(', ')}
+                    </div>` : ''}
+                </div>
+            `;
+        }
+        
+        function generateEntitiesTab(data) {
+            return `
+                <div class="detail-section">
+                    <h2>🔍 Entity Information</h2>
+                    ${data.entity_types ? `
+                    <h3>Entity Types</h3>
+                    <table class="rate-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Entity Type</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(data.entity_types).map(([type, count]) => `
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${type}</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${count}</td>
+                            </tr>`).join('')}
+                        </tbody>
+                    </table>` : ''}
+                    
+                    ${data.entity_ids ? `
+                    <h3>All Entity IDs (${data.entity_ids.length} total)</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.entity_ids.map(id => `<span class="tag">${id}</span>`).join('')}
+                    </div>` : ''}
+                    
+                    ${data.user_ids ? `
+                    <h3>User IDs</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.user_ids.map(id => `<span class="tag">${id}</span>`).join('')}
+                    </div>` : ''}
+                    
+                    ${data.pending_task_ids ? `
+                    <h3>Pending Task IDs</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.pending_task_ids.map(id => `<span class="tag">${id}</span>`).join('')}
+                    </div>` : ''}
+                    
+                    ${data.null_fields ? `
+                    <h3>Fields with Null Values</h3>
+                    <div style="margin: 15px 0;">
+                        ${data.null_fields.map(field => `<span class="tag" style="background: #ffebee; color: #c62828;">${field}</span>`).join('')}
+                    </div>` : ''}
+                </div>
+            `;
+        }
 
         function copyToClipboard(shipmentId) {
             const text = document.getElementById(`raw-${shipmentId}`).textContent;
@@ -609,6 +1065,26 @@
         function showError(message) {
             document.getElementById('content').innerHTML = 
                 `<div class="error">❌ ${message}</div>`;
+        }
+        
+        // Show specific tab
+        function showTab(shipmentIndex, tabName) {
+            // Hide all tabs for this shipment
+            const allTabs = document.querySelectorAll(`#shipment-${shipmentIndex} .tab-content`);
+            allTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(`tab-${shipmentIndex}-${tabName}`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Update button states
+            const allButtons = document.querySelectorAll(`#shipment-${shipmentIndex} .tab-btn`);
+            allButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Set active button
+            event.target.classList.add('active');
         }
 
         // Handle Enter key in search
