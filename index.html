@@ -457,14 +457,11 @@
         function displayShipment(shipmentId, data) {
             const content = document.getElementById('content');
             
-            // Parse the data
-            const logs = data.logs || [];
-            const entityCount = data.unique_entity_count || 0;
-            
-            // Calculate stats
-            const duration = calculateDuration(logs);
-            const milestones = extractMilestones(logs);
-            const documents = extractDocuments(logs);
+            // Parse the data - using the actual structure
+            const milestones = data.milestones || [];
+            const duration = data.total_shipment_duration || 0;
+            const logCount = data.log_entries_count || 0;
+            const documents = milestones.filter(m => m.event?.toLowerCase().includes('document')).length;
             
             // Generate HTML
             const html = `
@@ -472,7 +469,7 @@
                     <!-- Quick Stats -->
                     <div class="stats-grid">
                         <div class="stat-box">
-                            <div class="stat-value">${logs.length}</div>
+                            <div class="stat-value">${logCount}</div>
                             <div class="stat-label">Log Entries</div>
                         </div>
                         <div class="stat-box" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
@@ -484,20 +481,20 @@
                             <div class="stat-label">Key Milestones</div>
                         </div>
                         <div class="stat-box" style="background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);">
-                            <div class="stat-value">${documents.length}</div>
+                            <div class="stat-value">${documents}</div>
                             <div class="stat-label">Documents</div>
                         </div>
                     </div>
                     
                     <!-- Overview Cards -->
                     <div class="overview-grid">
-                        ${generateOverviewCards(logs, shipmentId)}
+                        ${generateOverviewCards(data, shipmentId)}
                     </div>
                     
                     <!-- Timeline -->
                     <div class="timeline">
                         <h3>📅 Shipment Timeline</h3>
-                        ${generateTimeline(logs)}
+                        ${generateTimeline(milestones)}
                     </div>
                     
                     <!-- Raw Data -->
@@ -514,39 +511,10 @@
             content.innerHTML = html;
         }
 
-        // Helper functions
-        function calculateDuration(logs) {
-            if (logs.length < 2) return 0;
-            const first = new Date(logs[0].timestamp);
-            const last = new Date(logs[logs.length - 1].timestamp);
-            return Math.ceil((last - first) / (1000 * 60 * 60 * 24));
-        }
+        // Helper functions removed - not needed with new structure
 
-        function extractMilestones(logs) {
-            const milestones = [];
-            const importantTypes = ['Shipment', 'ShipmentBooking', 'ShipmentPort', 'Document'];
-            
-            logs.forEach(log => {
-                if (importantTypes.some(type => log.entity_type?.includes(type))) {
-                    milestones.push(log);
-                }
-            });
-            
-            return milestones;
-        }
-
-        function extractDocuments(logs) {
-            return logs.filter(log => 
-                log.entity_type?.toLowerCase().includes('document') ||
-                log.new_value?.document_type
-            );
-        }
-
-        function generateOverviewCards(logs, shipmentId) {
-            // Extract key information
-            const bookingInfo = logs.find(log => log.entity_type === 'ShipmentBooking')?.new_value || {};
-            const shipmentInfo = logs.find(log => log.entity_type === 'Shipment')?.new_value || {};
-            const portInfo = logs.find(log => log.entity_type === 'ShipmentPort')?.new_value || {};
+        function generateOverviewCards(data, shipmentId) {
+            // Use data directly from the shipment object
             
             return `
                 <div class="overview-card">
@@ -556,49 +524,57 @@
                         <div class="info-value">${shipmentId}</div>
                     </div>
                     <div class="info-row">
+                        <div class="info-label">Type:</div>
+                        <div class="info-value">${data.type || 'N/A'}</div>
+                    </div>
+                    <div class="info-row">
                         <div class="info-label">Booking Reference:</div>
-                        <div class="info-value">${bookingInfo.booking_reference || 'N/A'}</div>
+                        <div class="info-value">${data.booking_reference || 'N/A'}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Container Number:</div>
-                        <div class="info-value">${bookingInfo.container_number || 'N/A'}</div>
+                        <div class="info-value">${data.container_number || 'N/A'}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Container Seal:</div>
-                        <div class="info-value">${bookingInfo.container_seal_number || 'None'}</div>
+                        <div class="info-value">${data.container_seal || 'None'}</div>
                     </div>
                 </div>
                 
                 <div class="overview-card">
-                    <h3>📍 Route Information</h3>
+                    <h3>📍 Cargo Details</h3>
                     <div class="info-row">
-                        <div class="info-label">Origin Port:</div>
-                        <div class="info-value">${portInfo.pol_port_name || 'N/A'}</div>
+                        <div class="info-label">Cargo:</div>
+                        <div class="info-value">${data.cargo || 'N/A'}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">Destination Port:</div>
-                        <div class="info-value">${portInfo.pod_port_name || 'N/A'}</div>
+                        <div class="info-label">Container Type:</div>
+                        <div class="info-value">${data.container || 'N/A'}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">ETD:</div>
-                        <div class="info-value">${formatDate(bookingInfo.etd)}</div>
+                        <div class="info-label">Source:</div>
+                        <div class="info-value">${data.source || 'N/A'}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">ETA:</div>
-                        <div class="info-value">${formatDate(bookingInfo.eta)}</div>
+                        <div class="info-label">Actual Departure:</div>
+                        <div class="info-value">${formatDate(data.actual_departure)}</div>
                     </div>
                 </div>
             `;
         }
 
-        function generateTimeline(logs) {
-            return logs.slice(0, 10).map(log => `
+        function generateTimeline(milestones) {
+            if (!milestones || milestones.length === 0) {
+                return '<p style="color: #7f8c8d; text-align: center;">No timeline events available</p>';
+            }
+            
+            return milestones.slice(0, 10).map(milestone => `
                 <div class="timeline-item">
-                    <div class="timeline-date">${formatDate(log.timestamp)}</div>
+                    <div class="timeline-date">${formatDate(milestone.timestamp)}</div>
                     <div class="timeline-content">
-                        <div class="timeline-title">${log.entity_type}</div>
+                        <div class="timeline-title">Milestone Event</div>
                         <div class="timeline-description">
-                            ${log.change_reason} - Entity ID: ${log.entity_id.substring(0, 8)}...
+                            ${milestone.event || 'Event occurred'}
                         </div>
                     </div>
                 </div>
