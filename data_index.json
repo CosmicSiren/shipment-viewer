@@ -1,0 +1,231 @@
+{
+  "total_shipments": 1571,
+  "chunks_per_file": 50,
+  "total_chunks": 32,
+  "chunks": [
+    {
+      "id": 0,
+      "filename": "data/chunk_0.json",
+      "start_index": 0,
+      "end_index": 50,
+      "count": 50
+    },
+    {
+      "id": 1,
+      "filename": "data/chunk_1.json",
+      "start_index": 50,
+      "end_index": 100,
+      "count": 50
+    },
+    {
+      "id": 2,
+      "filename": "data/chunk_2.json",
+      "start_index": 100,
+      "end_index": 150,
+      "count": 50
+    },
+    {
+      "id": 3,
+      "filename": "data/chunk_3.json",
+      "start_index": 150,
+      "end_index": 200,
+      "count": 50
+    },
+    {
+      "id": 4,
+      "filename": "data/chunk_4.json",
+      "start_index": 200,
+      "end_index": 250,
+      "count": 50
+    },
+    {
+      "id": 5,
+      "filename": "data/chunk_5.json",
+      "start_index": 250,
+      "end_index": 300,
+      "count": 50
+    },
+    {
+      "id": 6,
+      "filename": "data/chunk_6.json",
+      "start_index": 300,
+      "end_index": 350,
+      "count": 50
+    },
+    {
+      "id": 7,
+      "filename": "data/chunk_7.json",
+      "start_index": 350,
+      "end_index": 400,
+      "count": 50
+    },
+    {
+      "id": 8,
+      "filename": "data/chunk_8.json",
+      "start_index": 400,
+      "end_index": 450,
+      "count": 50
+    },
+    {
+      "id": 9,
+      "filename": "data/chunk_9.json",
+      "start_index": 450,
+      "end_index": 500,
+      "count": 50
+    },
+    {
+      "id": 10,
+      "filename": "data/chunk_10.json",
+      "start_index": 500,
+      "end_index": 550,
+      "count": 50
+    },
+    {
+      "id": 11,
+      "filename": "data/chunk_11.json",
+      "start_index": 550,
+      "end_index": 600,
+      "count": 50
+    },
+    {
+      "id": 12,
+      "filename": "data/chunk_12.json",
+      "start_index": 600,
+      "end_index": 650,
+      "count": 50
+    },
+    {
+      "id": 13,
+      "filename": "data/chunk_13.json",
+      "start_index": 650,
+      "end_index": 700,
+      "count": 50
+    },
+    {
+      "id": 14,
+      "filename": "data/chunk_14.json",
+      "start_index": 700,
+      "end_index": 750,
+      "count": 50
+    },
+    {
+      "id": 15,
+      "filename": "data/chunk_15.json",
+      "start_index": 750,
+      "end_index": 800,
+      "count": 50
+    },
+    {
+      "id": 16,
+      "filename": "data/chunk_16.json",
+      "start_index": 800,
+      "end_index": 850,
+      "count": 50
+    },
+    {
+      "id": 17,
+      "filename": "data/chunk_17.json",
+      "start_index": 850,
+      "end_index": 900,
+      "count": 50
+    },
+    {
+      "id": 18,
+      "filename": "data/chunk_18.json",
+      "start_index": 900,
+      "end_index": 950,
+      "count": 50
+    },
+    {
+      "id": 19,
+      "filename": "data/chunk_19.json",
+      "start_index": 950,
+      "end_index": 1000,
+      "count": 50
+    },
+    {
+      "id": 20,
+      "filename": "data/chunk_20.json",
+      "start_index": 1000,
+      "end_index": 1050,
+      "count": 50
+    },
+    {
+      "id": 21,
+      "filename": "data/chunk_21.json",
+      "start_index": 1050,
+      "end_index": 1100,
+      "count": 50
+    },
+    {
+      "id": 22,
+      "filename": "data/chunk_22.json",
+      "start_index": 1100,
+      "end_index": 1150,
+      "count": 50
+    },
+    {
+      "id": 23,
+      "filename": "data/chunk_23.json",
+      "start_index": 1150,
+      "end_index": 1200,
+      "count": 50
+    },
+    {
+      "id": 24,
+      "filename": "data/chunk_24.json",
+      "start_index": 1200,
+      "end_index": 1250,
+      "count": 50
+    },
+    {
+      "id": 25,
+      "filename": "data/chunk_25.json",
+      "start_index": 1250,
+      "end_index": 1300,
+      "count": 50
+    },
+    {
+      "id": 26,
+      "filename": "data/chunk_26.json",
+      "start_index": 1300,
+      "end_index": 1350,
+      "count": 50
+    },
+    {
+      "id": 27,
+      "filename": "data/chunk_27.json",
+      "start_index": 1350,
+      "end_index": 1400,
+      "count": 50
+    },
+    {
+      "id": 28,
+      "filename": "data/chunk_28.json",
+      "start_index": 1400,
+      "end_index": 1450,
+      "count": 50
+    },
+    {
+      "id": 29,
+      "filename": "data/chunk_29.json",
+      "start_index": 1450,
+      "end_index": 1500,
+      "count": 50
+    },
+    {
+      "id": 30,
+      "filename": "data/chunk_30.json",
+      "start_index": 1500,
+      "end_index": 1550,
+      "count": 50
+    },
+    {
+      "id": 31,
+      "filename": "data/chunk_31.json",
+      "start_index": 1550,
+      "end_index": 1571,
+      "count": 21
+    }
+  ]
+}
