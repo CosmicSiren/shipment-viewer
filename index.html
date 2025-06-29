@@ -427,7 +427,10 @@
                 }
                 
                 // Update UI
-                document.getElementById('loadingMessage').style.display = 'none';
+                const loadingElement = document.getElementById('loadingMessage');
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
                 updateChunkInfo();
             } catch (error) {
                 console.error('Failed to load data index:', error);
