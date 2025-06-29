@@ -409,17 +409,28 @@
         // Load data index on startup
         async function loadDataIndex() {
             try {
+                console.log('Loading data index...');
                 const response = await fetch('data_index.json');
                 if (!response.ok) throw new Error('Failed to load data index');
                 dataIndex = await response.json();
+                console.log('Data index loaded, total shipments:', dataIndex.total_shipments);
                 
                 // Load first chunk
                 await loadChunk(0);
+                console.log('First chunk loaded, shipment IDs:', allShipmentIds.length);
+                
+                // Display the first shipment
+                if (allShipmentIds.length > 0) {
+                    const firstShipmentId = allShipmentIds[0];
+                    displayShipment(firstShipmentId, currentChunkData[firstShipmentId]);
+                    updateNavigation();
+                }
                 
                 // Update UI
                 document.getElementById('loadingMessage').style.display = 'none';
                 updateChunkInfo();
             } catch (error) {
+                console.error('Failed to load data index:', error);
                 showError('Failed to load data index: ' + error.message);
             }
         }
@@ -430,16 +441,19 @@
             
             try {
                 const chunkInfo = dataIndex.chunks[chunkId];
+                console.log('Loading chunk:', chunkId, 'filename:', chunkInfo.filename);
                 const response = await fetch(chunkInfo.filename);
-                if (!response.ok) throw new Error('Failed to load chunk');
+                if (!response.ok) throw new Error(`Failed to load chunk: ${response.status} ${response.statusText}`);
                 
                 currentChunkData = await response.json();
                 currentChunkId = chunkId;
                 
                 // Update shipment IDs list for this chunk
                 updateShipmentIdsList();
+                console.log('Chunk loaded successfully, shipments in chunk:', Object.keys(currentChunkData).length);
                 
             } catch (error) {
+                console.error('Failed to load data chunk:', error);
                 showError('Failed to load data chunk: ' + error.message);
             }
         }
