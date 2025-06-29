@@ -42,7 +42,6 @@ github-pages/
 ```
 
 ## Data Format
-
 ### Index File (data_index.json)
 ```json
 {
@@ -81,48 +80,18 @@ Each chunk file contains shipment data in the following format:
 }
 ```
 
-## Usage
-
-1. **Local Development**: 
-   - Open `index.html` directly in a web browser
-   - No server setup required
-
-2. **GitHub Pages Deployment**:
-   - Push all files to a GitHub repository
-   - Enable GitHub Pages in repository settings
-   - Access via `https://[username].github.io/[repository-name]/`
-
-3. **Navigation**:
-   - Use Previous/Next buttons to browse shipments sequentially
-   - Enter a shipment ID in the search box to jump directly to it
-   - View chunk information to see which data file is currently loaded
 
 ## Performance Optimization
-
 - **Lazy Loading**: Only loads data chunks when needed
 - **Chunk Caching**: Previously loaded chunks remain in memory
 - **Efficient Search**: Searches through chunks sequentially until match is found
 - **Minimal DOM Updates**: Only updates changed content when navigating
 
 ## Browser Compatibility
-
 - Chrome/Edge (latest)
 - Firefox (latest)
 - Safari (latest)
 - Mobile browsers (iOS Safari, Chrome Mobile)
 
-## Future Enhancements
-
-- Export functionality for filtered data
-- Advanced search with multiple criteria
-- Data visualization charts
-- Bookmark/favorite shipments
-- Print-friendly views
-
 ## License
-
-This project is designed for internal use and shipment tracking purposes.
-
----
-
-Built with simplicity and performance in mind for efficient shipment data analysis.
+This project is designed for internal use 
